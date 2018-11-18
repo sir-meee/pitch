@@ -1,2 +1,6 @@
 virtual/
 *pyc
+/virtual    
+/migrations
+*pyc
+*.sh
