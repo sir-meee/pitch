@@ -1,36 +1,44 @@
 {% extends 'base.html'%}
-{% block content %}    
+{% import 'macros.html' as macro %}
+{% block styles%}
+{{ super() }}
+<link rel="stylesheet" href="{{url_for('static',filename='css/index.css')}}">
+<link href="https://fonts.googleapis.com/css?family=Bowlby+One+SC|Lemon|Luckiest+Guy|Titan+One" rel="stylesheet"> 
+{% endblock %}
+{% block content %}
+<div class="container-fluid">
+  <div class="jumbotron">
+    <h2>Pitch time</h2>
+  </div>
+<hr>
+<div class="row">
+  <div class="col-md-3">
+    <div class="well">
+      <p class="type">Jokes</p>
+      <div class="card-footer">
+        <a href="/jokes/" class="btn btn-info">Open Category<span class="glyphicon glyphicon-share-alt"></span></a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="well">
+       <p class="type">Pick-up lines</p>
+      <div class="card-footer">
+        <a href="/pick-up/" class="btn btn-info">Open Category<span class="glyphicon glyphicon-share-alt"></span></a>
+      </div>
+    </div>
+  </div>
+   <div class="col-md-3">
+    <div class="well">
+      <p class="type">Debate</p>
+      <div class="card-footer">
+        <a href="/debate/" class="btn btn-info">OOpen Category<span class="glyphicon glyphicon-share-alt"></span></a>
+      </div>
+    </div>
 
-
-<center>
-  <ul class="nav nav-tabs">
-      <li class="active"><a data-toggle="tab" href="#biz">Pick-up lines</a></li>
-      <li><a data-toggle="tab" href="#tech">Product Pitch</a></li>
-      <li><a data-toggle="tab" href="#ent">Jokes</a></li>
-      <li><a data-toggle="tab" href="#sprt">411</a></li>
-  </ul>
-</center>
-<div class="tab-content">
-  <div class="tab-pane fade in active" id="biz">
-      <ul>
-         
-      </ul>
-  </div>
-  <div class="tab-pane fade" id="tech">
-      <ul>
-         
-      </ul>
-  </div>
-  <div class="tab-pane fade" id="ent">
-      <ul>
-        
-      </ul>
-  </div>
-  <div class="tab-pane fade" id="sprt">
-      <ul>
-        
-      </ul>
-  </div>
+</div>
+</div>
 </div>
 
+</div>
 {% endblock%}
