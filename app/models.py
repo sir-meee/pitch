@@ -27,3 +27,13 @@ class Pitch(db.Model):
     content = db.Column(db.String(255))
     def __repr__(self):
         return f'The pitch category {self.category}'
+
+
+class Comment(db.Model):
+    __tablename__ = 'comments'
+    id = db.Column(db.Integer,primary_key = True)
+    user_id = db.Column(db.Integer,db.ForeignKey('users.id'))
+    pitch_id = db.Column(db.Integer,db.ForeignKey('pitches.id'))
+    description = db.Column(db.String(255))
+    def __repr__(self):
+        return f'Comment: {self.description}'        
