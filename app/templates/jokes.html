@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block styles%}
+{{ super() }}
+<link rel="stylesheet" href="{{url_for('static',filename='css/jokes.css')}}">
+<link href="https://fonts.googleapis.com/css?family=Pangolin" rel="stylesheet"> 
+{% endblock %}
+<!-- content block -->
+{% block content %}
+   <div class=" col-md-10 col-md-offset-1 col-sm-12">
+      <h3>Jokes</h3>
+      <blockquote>
+Laughter is the best medicine but if you laugh for no reason, you need medicine.
+</blockquote>
+       <a class="btn btn-primary text-center text-danger " href="/joke/new-joke/"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>  Post a Pitch</a>
+       <hr>
+  </div>
+  <div class=" col-md-10 col-md-offset-1 col-sm-12">
+            {% for joke in jokes%}
+            <p>{{joke.content}}</p>
+            <a class="btn btn-primary text-center text-danger" href="/view-joke/{{joke.id}}">View Comments</a>
+              <a class="btn btn-primary text-center text-danger" href="/comment/{{joke.id}}">Comment</a>
+             <hr>
+          {% endfor %}
+            </div>
+       
+{% endblock %}

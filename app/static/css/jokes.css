@@ -1,0 +1,12 @@
+h3{
+  font-family: 'Pangolin', cursive;
+  font-size: 35px;
+ }
+}
+#post{
+  float: right;
+}
+img{
+  height: 250px;
+  text-align: center
+} 

@@ -1,6 +1,6 @@
 from . import db
-from werkzeug.security import generate_password_hash,check_password_hash
-from flask_login import UserMixin,current_user
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin
 from . import login_manager
 
 @login_manager.user_loader
@@ -15,101 +15,138 @@ class User(UserMixin,db.Model):
     email = db.Column(db.String(255),unique = True,index = True)
     bio = db.Column(db.String(255))
     profile_pic_path = db.Column(db.String())
-    pitches = db.relationship('Pitch', backref='user', lazy='dynamic')
-    comments = db.relationship('Comment', backref = 'user', lazy = 'dynamic')
-    upvotes = db.relationship('Upvote', backref = 'user', lazy = 'dynamic')
-    downvotes = db.relationship('Downvote', backref = 'user', lazy = 'dynamic')
+    jokes = db.relationship('Joke', backref='user', lazy='dynamic')
+    commentsjokes = db.relationship('Commentjoke', backref = 'user', lazy = 'dynamic')
+    debate = db.relationship('Debate', backref = 'user', lazy = 'dynamic')
+    commentsdebates = db.relationship('Commentdebate', backref = 'user', lazy = 'dynamic')
+    pickups = db.relationship('Pickup', backref = 'user', lazy = 'dynamic')
+    commentspickups = db.relationship('Commentlines', backref = 'user', lazy = 'dynamic')
+
     @property
     def password(self):
         raise AttributeError('You cannot read the password attribute')
+
     @password.setter
     def password(self, password):
         self.pass_secure = generate_password_hash(password)
+
+
     def verify_password(self,password):
-        return check_password_hash(self.pass_secure,password)     
-    def __repr__(self):
-        return f'User {self.username}'  
+        return check_password_hash(self.pass_secure, password)
 
-class Pitch(db.Model):
-    __tablename__ = 'pitches'
-    id = db.Column(db.Integer,primary_key = True)
-    user_id = db.Column(db.Integer,db.ForeignKey('users.id'))
-    category = db.Column(db.String(255))
+    def __repr__(self):
+        return f'User {self.username}'
+
+class Joke(db.Model):
+    __tablename__ = 'jokes'
+    id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String(255))
-    
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    comments = db.relationship('Commentjoke', backref='title', lazy='dynamic')
+
+    def save_joke(self):
+        db.session.add(self)
+        db.session.commit()
 
     @classmethod
-    def get_pitches(cls, id):
-        """
-        Function that returns pitches and sorts them in descending order so that the latest pitch shows up first
-        """
-        pitches = Pitch.query.order_by(pitch_id=id).desc().all()
-        return pitches
+    def get_jokes(cls):
+        jokes = Joke.query.all()
+        return jokes
 
-    def __repr__(self):
-        return f'The pitch category {self.category}'
-
-
-class Comment(db.Model):
-    __tablename__ = 'comments'
-    id = db.Column(db.Integer,primary_key = True)
-    user_id = db.Column(db.Integer,db.ForeignKey('users.id'))
-    pitch_id = db.Column(db.Integer,db.ForeignKey('pitches.id'))
+class Commentjoke(db.Model):
+    __tablename__ = 'jokecomments'
+    id = db.Column(db.Integer, primary_key = True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    joke_id = db.Column(db.Integer, db.ForeignKey('jokes.id'))
     description = db.Column(db.String(255))
-    def __repr__(self):
-        return f'Comment: {self.description}'        
 
-
-class Upvote(db.Model):
-    __tablename__ = 'upvotes'
-    id = db.Column(db.Integer,primary_key = True)
-    user_id = db.Column(db.Integer,db.ForeignKey('users.id'))
-    pitch_id = db.Column(db.Integer,db.ForeignKey('pitches.id'))
-    number_upvote = db.Column(db.Integer,default=1)
-    
-    def save_upvotes(self):
+    def save_comment(self):
+        """
+        Function that saves the jokes' comments
+        """
         db.session.add(self)
         db.session.commit()
-    
-    @classmethod
-    def add_upvotes(cls,id):
-        upvote_pitch = Upvote(user = current_user, pitch_id=id)
-        upvote_pitch.save_upvotes()
-    
-    @classmethod
-    def get_upvotes(cls,id):
-        upvote = Upvote.query.filter_by(pitch_id=id).all()
-        return upvote
 
+    @classmethod
+    def get_comments(self, id):
+        comment = Commentjoke.query.filter_by(joke_id=id).all()
+        return comment
 
     def __repr__(self):
-        return f'Upvote number: {self.number_upvote}'  
+        return f'Comment: {self.content}'
+class Pickup(db.Model):
+    __tablename__ = 'lines'
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String(255))
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    comments = db.relationship('Commentlines', backref='title', lazy='dynamic')
 
-
-class Downvote(db.Model):
-    __tablename__ = 'downvotes'
-    id = db.Column(db.Integer,primary_key = True)
-    user_id = db.Column(db.Integer,db.ForeignKey('users.id'))
-    pitch_id = db.Column(db.Integer,db.ForeignKey('pitches.id'))
-    number_downvote = db.Column(db.Integer,default=1)
-    
-    
-    def save_downvotes(self):
+    def save_pickup(self):
         db.session.add(self)
         db.session.commit()
+
     @classmethod
-    def add_downvotes(cls,id):
-        downvote_pitch = Downvote(user = current_user, pitch_id=id)
-        downvote_pitch.save_downvotes()
-     
+    def get_pickups(cls):
+        lines = Pickup.query.all()
+        return lines
+
+class Commentlines(db.Model):
+    __tablename__ = 'linescomments'
+    id = db.Column(db.Integer, primary_key = True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    pickup_id = db.Column(db.Integer, db.ForeignKey('lines.id'))
+    description = db.Column(db.String(255))
+
+    def save_commentl(self):
+        """
+        Function that saves the pickup lines' comments
+        """
+        db.session.add(self)
+        db.session.commit()
+
+
     @classmethod
-    def get_downvotes(cls,id):
-        downvote = Downvote.query.filter_by(pitch_id=id).all()
-        return downvote
-    @classmethod
-    def get_all_downvotes(cls,pitch_id):
-        downvote = Downvote.query.order_by('id').all()
-        return downvote
+    def get_commentsl(self, id):
+        comment = Commentlines.query.filter_by(pickup_id=id).all()
+        return comment
 
     def __repr__(self):
-        return f'Downvote number: {self.number_downvote}'            
+        return f'Comment: {self.content}'
+
+class Debate(db.Model):
+    __tablename__ = 'debates'
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String(255))
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    comments = db.relationship('Commentdebate', backref='title', lazy='dynamic')
+
+    def save_debate(self):
+        db.session.add(self)
+        db.session.commit()
+
+    @classmethod
+    def get_debates(cls):
+        debs = Debate.query.all()
+        return debs
+
+class Commentdebate(db.Model):
+    __tablename__ = 'debatecomments'
+    id = db.Column(db.Integer, primary_key = True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    debate_id = db.Column(db.Integer, db.ForeignKey('debates.id'))
+    description = db.Column(db.String(255))
+
+    def save_commentd(self):
+        """
+        Function that saves the debates' comments
+        """
+        db.session.add(self)
+        db.session.commit()
+
+    @classmethod
+    def get_commentsd(self, id):
+        comment = Commentdebate.query.filter_by(debate_id=id).all()
+        return comment
+
+    def __repr__(self):
+        return f'Comment: {self.content}'

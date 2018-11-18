@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block styles%}
+{{ super() }}
+<link rel="stylesheet" href="{{url_for('static',filename='css/jokes.css')}}">
+<link href="https://fonts.googleapis.com/css?family=Pangolin" rel="stylesheet"> 
+{% endblock %}
+<!-- content block -->
+{% block content %}
+   <div class=" col-md-10 col-md-offset-1 col-sm-12">
+      <h3>Debate</h3>
+      <blockquote>
+We must speak our minds openly, debate our disagreements honestly, but always pursue solidarity.
+</blockquote>
+       <a class="btn btn-primary text-center text-danger " href="/debate/new-debate/"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>  Post a Pitch</a>
+       <hr>
+  </div>
+  <div class=" col-md-10 col-md-offset-1 col-sm-12">
+            {% for debate in debates%}
+            <p>{{debate.content}}</p>
+            <a class="btn btn-primary text-center text-danger" href="/view-debate/{{debate.id}}">View Comments</a>
+              <a class="btn btn-primary text-center text-danger" href="/comment-debates/{{debate.id}}">Comment</a>
+             <hr>
+          {% endfor %}
+            </div>
+       
+{% endblock %} 

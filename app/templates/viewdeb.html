@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+ {%block styles%}
+  {{ super() }}
+{%endblock%}
+ <!-- content block -->
+{% block content %}
+<div class="container-fluid">
+<div class="well">
+<h3 style="font-size:30px;">{{debates.content}}</h3>
+</div>
+<hr>
+<h2>Comments:</h2>
+ {% if comments %}
+<div class=" col-md-10 col-md-offset-1 col-sm-12">
+<div class="thumbnail" style="padding:5%;">
+{% for comment in comments%}
+   <p style="font-size:20px;">-- {{comment.description}}</p>
+   {% endfor %}
+</div>
+</div>
+</div>
+ {%else%}
+        <div class="well">
+          <h4 style="padding:10%; text-align:center; font-size:50px">No comment made of this pitch yet</h4>
+        </div>
+{% endif %}
+{% endblock %} 

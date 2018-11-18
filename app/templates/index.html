@@ -1,5 +1,4 @@
 {% extends 'base.html'%}
-{% import 'macros.html' as macro %}
 {% block styles%}
 {{ super() }}
 <link rel="stylesheet" href="{{url_for('static',filename='css/index.css')}}">
@@ -32,7 +31,7 @@
     <div class="well">
       <p class="type">Debate</p>
       <div class="card-footer">
-        <a href="/debate/" class="btn btn-info">OOpen Category<span class="glyphicon glyphicon-share-alt"></span></a>
+        <a href="/debate/" class="btn btn-info">Open Category<span class="glyphicon glyphicon-share-alt"></span></a>
       </div>
     </div>
 
