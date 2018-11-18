@@ -11,7 +11,14 @@ def index():
 
 @main.route('/pitches/new', methods = ['GET','POST'])
 @login_required
-def new_pitch(id):
+def new_pitch():
     """
     View new pitch function that returns new pitches and its data
     """
+
+@main.route('/comments/new/<int:pitch_id>', methods = ['GET','POST'])
+@login_required
+def new_comment(pitch_id):
+    """
+    View new comment function that returns the comment page and its data
+    """ 
