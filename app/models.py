@@ -36,9 +36,16 @@ class Pitch(db.Model):
     user_id = db.Column(db.Integer,db.ForeignKey('users.id'))
     category = db.Column(db.String(255))
     content = db.Column(db.String(255))
-    comments = db.relationship('Comment', backref = 'pitch', lazy = 'dynamic')
-    upvotes = db.relationship('Upvote', backref = 'pitch', lazy = 'dynamic')
-    downvotes = db.relationship('Downvote', backref = 'pitch', lazy = 'dynamic')
+    
+
+    @classmethod
+    def get_pitches(cls, id):
+        """
+        Function that returns pitches and sorts them in descending order so that the latest pitch shows up first
+        """
+        pitches = Pitch.query.order_by(pitch_id=id).desc().all()
+        return pitches
+        
     def __repr__(self):
         return f'The pitch category {self.category}'
 
