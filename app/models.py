@@ -37,3 +37,13 @@ class Comment(db.Model):
     description = db.Column(db.String(255))
     def __repr__(self):
         return f'Comment: {self.description}'        
+
+
+class Upvote(db.Model):
+    __tablename__ = 'upvotes'
+    id = db.Column(db.Integer,primary_key = True)
+    user_id = db.Column(db.Integer,db.ForeignKey('users.id'))
+    pitch_id = db.Column(db.Integer,db.ForeignKey('pitches.id'))
+    number_upvote = db.Column(db.Integer,default=1)
+    def __repr__(self):
+        return f'Upvote number: {self.number_upvote}'        
