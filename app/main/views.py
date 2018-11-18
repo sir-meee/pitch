@@ -21,4 +21,11 @@ def new_pitch():
 def new_comment(pitch_id):
     """
     View new comment function that returns the comment page and its data
+    """
+
+@main.route('/pitches/upvote/<int:pitch_id>/upvote', methods = ['GET','POST'])
+@login_required
+def upvote(pitch_id):
+    """
+    View new comment function that returns the comment page and its data
     """ 
