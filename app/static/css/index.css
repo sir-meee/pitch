@@ -1,0 +1,30 @@
+.jumbotron{
+  background-image: url("/static/photos/bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  height: 450px;
+   
+}
+h2{
+  background-color:rgba(255,255,255,0.5);
+  padding-top: 76px;
+  text-align: center;
+  height: 200px;
+  font-family: 'Bowlby One SC', cursive;
+  font-size: 60px;
+  margin-bottom: 10px;
+  
+  
+}
+.well{
+  text-align: center;
+}
+.row{
+  margin-left: 300px;
+  margin-top: 80px;
+}
+.type{
+  font-family: 'Lemon', cursive;
+  font-size: 20px;
+} 
