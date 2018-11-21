@@ -1,3 +1,5 @@
+# pylint: skip-file
+
 from flask import render_template,abort,redirect,url_for,request,abort
 from . import main
 from flask_login import login_required, current_user
